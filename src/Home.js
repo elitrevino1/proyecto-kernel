@@ -89,7 +89,7 @@ class Home extends Component {
     }
 
     handleNew() {
-        if (this.state.concurrentes <= this.state.maxProc) {
+        if (this.state.concurrentes < this.state.maxProc) {
             let newProc = {
                 nombre: this.state.procesoCont,
                 llegada: this.state.tiempoActual,
@@ -532,7 +532,7 @@ class Home extends Component {
                                 </Col>
                             </Row>
                             <Row style={{ minHeight: "200px", backgroundColor: "white", color: "black" }}>
-                                <Col className="pt-2">
+                                <Col className="py-2">
                                     <ListGroup style={{ fontSize: 12 }}>
                                         {this.state.ready.map((proc, key) => <ListGroup.Item className="p-1 w-100 text-center" key={key}>{proc}</ListGroup.Item>)}
                                     </ListGroup>
@@ -548,7 +548,7 @@ class Home extends Component {
                                 </Col>
                             </Row>
                             <Row style={{ minHeight: "200px", backgroundColor: "white", color: "black" }}>
-                                <Col className="pt-2">
+                                <Col className="py-2">
                                     <ListGroup style={{ fontSize: 12 }}>
                                         <ListGroup.Item className="p-1 w-100 text-center" style={{ backgroundColor: "darkorange" }}>{this.state.running}</ListGroup.Item>
                                     </ListGroup>
@@ -564,7 +564,7 @@ class Home extends Component {
                                 </Col>
                             </Row>
                             <Row style={{ minHeight: "200px", backgroundColor: "white", color: "black" }}>
-                                <Col className="pt-2">
+                                <Col className="py-2">
                                     <ListGroup style={{ fontSize: 12 }}>
                                         {this.state.blocked.map((proc, key) => <ListGroup.Item className="p-1 w-100 text-center" key={key}>{proc}</ListGroup.Item>)}
                                     </ListGroup>
@@ -580,7 +580,7 @@ class Home extends Component {
                                 </Col>
                             </Row>
                             <Row style={{ minHeight: "200px", backgroundColor: "white", color: "black" }}>
-                                <Col className="pt-2">
+                                <Col className="py-2">
                                     <ListGroup style={{ fontSize: 12 }}>
                                         {this.state.finished.map((proc, key) => <ListGroup.Item className="p-1 w-100 text-center" key={key}>{proc}</ListGroup.Item>)}
                                     </ListGroup>
