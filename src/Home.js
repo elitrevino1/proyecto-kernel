@@ -21,7 +21,6 @@ class Home extends Component {
             otroEjecCont: 1,
             reemplazo: 4,
             maxPags: 3,
-            pagina: -1,
             pcb: [{
                 nombre: 1,
                 llegada: 10,
@@ -487,6 +486,7 @@ class Home extends Component {
                 this.setState({ running: this.state.ready[0] });
                 this.state.ready.shift();
                 this.prioritizeReady(this.state.algoritmo);
+                this.handleEjec();
                 break;
             case 2:
                 console.log("terminacion normal");
@@ -500,6 +500,7 @@ class Home extends Component {
                 this.setState({ running: this.state.ready[0] });
                 this.state.ready.shift();
                 this.prioritizeReady(this.state.algoritmo);
+                this.handleEjec();
                 break;
             case 3:
                 console.log("solicitud fecha");
@@ -512,6 +513,7 @@ class Home extends Component {
                 this.setState({ running: this.state.ready[0] });
                 this.state.ready.shift();
                 this.prioritizeReady(this.state.algoritmo);
+                this.handleEjec();
                 break;
             case 4:
                 console.log("error programa");
@@ -525,6 +527,7 @@ class Home extends Component {
                 this.setState({ running: this.state.ready[0] });
                 this.state.ready.shift();
                 this.prioritizeReady(this.state.algoritmo);
+                this.handleEjec();
                 break;
             case 5:
                 console.log("quantum expirado");
@@ -538,6 +541,7 @@ class Home extends Component {
                 this.setState({ running: this.state.ready[0] });
                 this.state.ready.shift();
                 this.prioritizeReady(this.state.algoritmo);
+                this.handleEjec();
                 break;
             case 6:
                 console.log("disp IO");
@@ -555,16 +559,20 @@ class Home extends Component {
                     this.state.ready.shift();
                     this.prioritizeReady(this.state.algoritmo);
                 }
-
+                this.handleEjec();
                 break;
             default:
                 console.log(interrupt);
                 break;
         }
-        this.handleEjec();
+        
     }
 
     ejecutarPagina(pagina) {
+        if(pagina === "Seleccionar"){
+            return;
+        }
+    
         this.handleEjec();
 
         if (this.state.pcb[this.state.running - 1].pags[pagina].bitResidencia == 1) {
@@ -617,6 +625,8 @@ class Home extends Component {
             // DUDA: cuando se carga, cambias llegada? (creo q si)
             // DUDA: cuando un proceso va ready -> running, qué pg se ejecuta? (creo q en la q se quedo ej pc)
             // DUDA: cuando un proceso va ready -> running, hacemos que en auto se ejecute la pg en pc? (creo q no)
+            // todo OK check
+            
             this.solicitarPagina(pagina);
 
             setTimeout(() => {
@@ -624,6 +634,12 @@ class Home extends Component {
                     this.state.ready.push(this.state.running);
 
                     this.state.pcb[this.state.pgFaults[this.state.pgFaults.length-1]-1].pags[pagina].llegada = this.state.tiempoActual;
+                    this.state.pcb[this.state.pgFaults[this.state.pgFaults.length-1]-1].pags[pagina].accesos = 0;
+                    this.state.pcb[this.state.pgFaults[this.state.pgFaults.length-1]-1].pags[pagina].contAccesos = 0;
+                    this.state.pcb[this.state.pgFaults[this.state.pgFaults.length-1]-1].pags[pagina].escritura = 0;
+                    this.state.pcb[this.state.pgFaults[this.state.pgFaults.length-1]-1].pags[pagina].lectura = 0;
+                    this.state.pcb[this.state.pgFaults[this.state.pgFaults.length-1]-1].pags[pagina].modificacion = 0;
+                    this.state.pcb[this.state.pgFaults[this.state.pgFaults.length-1]-1].pags[pagina].ultAcceso = 0;
 
                     this.state.ready.push(this.state.pgFaults[0]);
                     this.prioritizeReady(this.state.algoritmo);
@@ -1039,7 +1055,7 @@ class Home extends Component {
 
                                     <Form.Select className="py-2 px-2" style={{ fontSize: 14 }}
                                         value={this.state.pagina} onChange={e => this.ejecutarPagina(e.target.value)}>
-                                            <option value={-1}>Seleccionar</option>
+                                            <option>Seleccionar</option>
                                         {this.state.running && this.state.pcb[this.state.running - 1].pags.map((pag, key) => {
                                             return <option value={pag.num} key={key}>Ejecutar página {pag.num}</option>
                                         })}
