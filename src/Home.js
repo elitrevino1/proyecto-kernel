@@ -453,6 +453,23 @@ class Home extends Component {
 
     handleNew() {
         if (this.state.concurrentes < this.state.maxProc) {
+            let newPags = [];
+
+            for(let i=0; i<this.state.pags; i++){
+                let newPag = {
+                    num: i,
+                    bitResidencia: 0,
+                    llegada: 0,
+                    ultAcceso: 0,
+                    accesos: 0,
+                    lectura: 0,
+                    escritura: 0,
+                    modificacion: 0,
+                    contAccesos: 0
+                }
+                newPags.push(newPag)
+            }
+
             let newProc = {
                 nombre: this.state.procesoCont,
                 llegada: this.state.tiempoActual,
@@ -460,7 +477,9 @@ class Home extends Component {
                 envejecimiento: 0,
                 cpuRestante: this.state.ejec,
                 quantumRestante: 0,
-                numPags: this.state.pags
+                pc: 0,
+                numPags: this.state.pags,
+                pags: newPags
             }
             this.state.pcb.push(newProc);
             this.state.ready.push(this.state.procesoCont);
